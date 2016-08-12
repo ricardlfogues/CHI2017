@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tastetest;
+package StudyResults;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,7 +25,7 @@ import org.apache.mahout.cf.taste.similarity.UserSimilarity;
  *
  * @author Ricard
  */
-public class EvaluateRecommender {
+public class Evaluator {
 
     private class MyRecommenderBuilder implements RecommenderBuilder {
         @Override
@@ -41,13 +41,13 @@ public class EvaluateRecommender {
      * @throws org.apache.mahout.cf.taste.common.TasteException
      */
     public static void main(String[] args) throws IOException, TasteException {
-        EvaluateRecommender evaluation = new EvaluateRecommender();
+        Evaluator evaluation = new Evaluator();
         evaluation.DoStuff();
     }
     
     private void DoStuff()throws IOException, TasteException {
         DataModel model = new FileDataModel(new File("collaborativeFilteringCase3.csv"));
-        RecommenderEvaluator evaluator = new AverageAbsoluteDifferenceRecommenderEvaluator();
+        AverageAbsoluteDifferenceRecommenderEvaluator evaluator = new AverageAbsoluteDifferenceRecommenderEvaluator();
         RecommenderBuilder builder = new MyRecommenderBuilder();
         PrintWriter writer = new PrintWriter("resultsCase3.txt", "UTF-8");
         double result;
