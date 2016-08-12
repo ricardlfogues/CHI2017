@@ -23,6 +23,9 @@ public class Scenario {
     public static final int INVALID = 3;
     //public static final int[] REGRESS_VALUES = {1, 2, 3};
     public static final String[] REGRESS_VALUES = {"all", "common", "self"};
+    public static final int SENSITIVITY_INDEX = 0;
+    public static final int SENTIMENT_INDEX = 1;
+    public static final int RELATIONSHIP_INDEX = 2;
             
     public int id;
     public Integer[] policies = new Integer[3];

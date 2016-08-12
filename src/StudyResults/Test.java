@@ -17,7 +17,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.mahout.cf.taste.common.TasteException;
-import org.apache.mahout.cf.taste.eval.RecommenderBuilder;
 import org.apache.mahout.cf.taste.impl.model.file.FileDataModel;
 import org.apache.mahout.cf.taste.impl.neighborhood.ThresholdUserNeighborhood;
 import org.apache.mahout.cf.taste.impl.recommender.GenericUserBasedRecommender;
@@ -25,7 +24,6 @@ import org.apache.mahout.cf.taste.impl.similarity.PearsonCorrelationSimilarity;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.neighborhood.UserNeighborhood;
 import org.apache.mahout.cf.taste.recommender.RecommendedItem;
-import org.apache.mahout.cf.taste.recommender.Recommender;
 import org.apache.mahout.cf.taste.recommender.UserBasedRecommender;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 
@@ -39,8 +37,10 @@ public class Test {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException, TasteException, ClassNotFoundException, SQLException {   
-        GenerateDataModelFiles();
-        BasicRecommendation();
+        //GenerateDataModelFiles();
+        //BasicRecommendation();
+        //EvaluateRecommender("Resources/case1NumericID.csv", "Resources/EvaluationResult.txt");
+        FeatureSelection.SelectFeaturesCase1();
     }
     
     /**
@@ -114,8 +114,8 @@ public class Test {
         writer.close();
     }    
     
-    private static void EvaluateRecommender() throws IOException, TasteException{
+    private static void EvaluateRecommender(String inputFile, String outputFile) throws IOException, TasteException{
         Evaluator evaluator = new Evaluator();
-        evaluator.Evaluate("Resources/case1NumericID.csv", "Resources/evaluationResults.txt");
+        evaluator.Evaluate(inputFile, outputFile);
     }
 }

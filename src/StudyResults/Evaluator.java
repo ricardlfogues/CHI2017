@@ -12,6 +12,7 @@ import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.eval.RecommenderBuilder;
 import org.apache.mahout.cf.taste.eval.RecommenderEvaluator;
 import org.apache.mahout.cf.taste.impl.eval.AverageAbsoluteDifferenceRecommenderEvaluator;
+import org.apache.mahout.cf.taste.impl.eval.RMSRecommenderEvaluator;
 import org.apache.mahout.cf.taste.impl.model.file.FileDataModel;
 import org.apache.mahout.cf.taste.impl.neighborhood.ThresholdUserNeighborhood;
 import org.apache.mahout.cf.taste.impl.recommender.GenericUserBasedRecommender;
@@ -38,15 +39,16 @@ public class Evaluator {
     
     public void Evaluate(String fileDataModelName, String resultFile)throws IOException, TasteException {
         DataModel model = new FileDataModel(new File(fileDataModelName));
-        AverageAbsoluteDifferenceRecommenderEvaluator evaluator = new AverageAbsoluteDifferenceRecommenderEvaluator();
+        RecommenderEvaluator evaluator = new RMSRecommenderEvaluator();
         RecommenderBuilder builder = new MyRecommenderBuilder();
         PrintWriter writer = new PrintWriter(resultFile, "UTF-8");
-        double result;
-        for(int i = 0; i < 10; i++){
-            result = evaluator.evaluate(builder, null, model, 0.9, 1.0);
-            writer.println(result);
-            System.out.println(result);
+        double result = 0;
+        for(int i = 0; i < 1000; i++){
+            result += evaluator.evaluate(builder, null, model, 0.9, 1.0);
+            //writer.println(result);            
         }        
+        result /= 1000;
+        writer.println(result);
         writer.close();
     }    
 }

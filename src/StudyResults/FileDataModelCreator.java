@@ -217,4 +217,70 @@ public class FileDataModelCreator {
         }
         return result;
     }
+    
+    public static String GetCSVCase1(HashMap<Integer, Scenario> scenarios, HashMap<String, ArrayList<Response>> responsesByUser, String[] relationships, boolean[] availableFeatures, boolean useTurkerID) {
+        String result = "";
+        int turkerIDIndex = 0;
+        int maxSensitivity = 6;
+        if(!availableFeatures[Scenario.SENSITIVITY_INDEX])
+            maxSensitivity = 2;
+        int maxSentiment = 6;
+        if(!availableFeatures[Scenario.SENTIMENT_INDEX])
+            maxSentiment = 2;
+        int maxRelIndex = relationships.length;
+        if(!availableFeatures[Scenario.RELATIONSHIP_INDEX])
+            maxRelIndex = 1;
+        for (String turkerID : responsesByUser.keySet()) {
+            for (int sensitivity = 1; sensitivity < maxSensitivity; sensitivity++) {
+                for(int sentiment = 1; sentiment < maxSentiment; sentiment++){
+                    for (int relIndex = 0; relIndex < maxRelIndex; relIndex++) {
+                        int scenarioID = 0;
+                        if(availableFeatures[Scenario.SENSITIVITY_INDEX])
+                            scenarioID += sensitivity * 100;
+                        if(availableFeatures[Scenario.SENTIMENT_INDEX])
+                            scenarioID += sentiment * 10;
+                        if(availableFeatures[Scenario.RELATIONSHIP_INDEX])
+                            scenarioID += relIndex;
+                        double avg = 0;
+                        double countResponses = 0;
+                        for (Response response : responsesByUser.get(turkerID)) {
+                            boolean exAndCommon = false;
+                            Scenario scenario = scenarios.get(response.scenarioID);
+                            for (int i = 0; i < 3; i++) {
+                                if (scenario.policies[i] == Scenario.COMMON
+                                        && scenario.arguments[i] == Scenario.EXCEPTIONAL_CASE) {
+                                    exAndCommon = true;
+                                    break;
+                                }
+                            }
+                            if (response.result[0] != Scenario.INVALID                                    
+                                    && !exAndCommon) {
+                                boolean equalSentiment = sentiment == response.sentiment;                                
+                                if(!availableFeatures[Scenario.SENTIMENT_INDEX])
+                                    equalSentiment = true;
+                                boolean equalSensitivity = sensitivity == response.sensitivity;                               
+                                if(!availableFeatures[Scenario.SENSITIVITY_INDEX])
+                                    equalSensitivity = true;
+                                boolean equalRelationship = response.relationship.trim().equalsIgnoreCase(relationships[relIndex].trim());
+                                if(!availableFeatures[Scenario.RELATIONSHIP_INDEX])
+                                    equalRelationship = true;
+                                if (equalSentiment && equalSensitivity && equalRelationship) {
+                                    avg += response.result[0];
+                                    countResponses++;
+                                }
+                            }
+                        }
+                        String id = Integer.toString(turkerIDIndex);
+                        if(useTurkerID)
+                            id = turkerID;
+                        if (countResponses > 0) {
+                            result += id + "," + scenarioID + "," + (avg / countResponses) + "\r\n";
+                        }
+                    }
+                }
+            }
+            turkerIDIndex++;
+        }
+        return result;
+    }
 }
