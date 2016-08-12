@@ -113,4 +113,9 @@ public class Test {
         }
         writer.close();
     }    
+    
+    private static void EvaluateRecommender() throws IOException, TasteException{
+        Evaluator evaluator = new Evaluator();
+        evaluator.Evaluate("Resources/case1NumericID.csv", "Resources/evaluationResults.txt");
+    }
 }

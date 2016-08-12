@@ -34,22 +34,13 @@ public class Evaluator {
             UserNeighborhood neighborhood = new ThresholdUserNeighborhood(0.1, similarity, dm);
             return new GenericUserBasedRecommender(dm, neighborhood, similarity);
         }        
-    }
-    /**
-     * @param args the command line arguments
-     * @throws java.io.IOException
-     * @throws org.apache.mahout.cf.taste.common.TasteException
-     */
-    public static void main(String[] args) throws IOException, TasteException {
-        Evaluator evaluation = new Evaluator();
-        evaluation.DoStuff();
-    }
+    }   
     
-    private void DoStuff()throws IOException, TasteException {
-        DataModel model = new FileDataModel(new File("collaborativeFilteringCase3.csv"));
+    public void Evaluate(String fileDataModelName, String resultFile)throws IOException, TasteException {
+        DataModel model = new FileDataModel(new File(fileDataModelName));
         AverageAbsoluteDifferenceRecommenderEvaluator evaluator = new AverageAbsoluteDifferenceRecommenderEvaluator();
         RecommenderBuilder builder = new MyRecommenderBuilder();
-        PrintWriter writer = new PrintWriter("resultsCase3.txt", "UTF-8");
+        PrintWriter writer = new PrintWriter(resultFile, "UTF-8");
         double result;
         for(int i = 0; i < 10; i++){
             result = evaluator.evaluate(builder, null, model, 0.9, 1.0);
