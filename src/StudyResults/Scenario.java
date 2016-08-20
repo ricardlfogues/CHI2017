@@ -26,6 +26,15 @@ public class Scenario {
     public static final int SENSITIVITY_INDEX = 0;
     public static final int SENTIMENT_INDEX = 1;
     public static final int RELATIONSHIP_INDEX = 2;
+    public static final int MOST_RESTRICTIVE_INDEX = 0;
+    public static final int LEAST_RESTRICTIVE_INDEX = 1;
+    public static final int MAJORITY_INDEX = 2;
+    public static final int POSITIVE_SUP_ALL = 0;
+    public static final int POSITIVE_SUP_COMMON = 1;
+    public static final int NEGATIVE_SUP_COMMON = 2;
+    public static final int NEGATIVE_SUP_SELF = 3;
+    public static final int EXCEPTIONAL_SUP_ALL = 4;
+    public static final int EXCEPTIONAL_SUP_SELF = 5;
             
     public int id;
     public Integer[] policies = new Integer[3];
@@ -89,13 +98,23 @@ public class Scenario {
     }
     
     public static int GetArgPolIndex(int argument, int policy){
-        if(argument == POSITIVE_CONSEQUENCE)
-            return policy;
-        else if(argument == NEGATIVE_CONSEQUENCE)
-            return policy + 1;
-        if(policy == ALL)
-            return 4;
-        else
-            return 5;
+        if(argument == POSITIVE_CONSEQUENCE){
+            if(policy == ALL)
+                return POSITIVE_SUP_ALL;
+            else
+                return POSITIVE_SUP_COMMON;
+        }            
+        else if(argument == NEGATIVE_CONSEQUENCE){
+            if(policy == COMMON)
+                return NEGATIVE_SUP_COMMON;
+            else
+                return NEGATIVE_SUP_SELF;
+        }         
+        else{
+            if(policy == ALL)
+                return EXCEPTIONAL_SUP_ALL;
+            else
+                return EXCEPTIONAL_SUP_SELF;
+        }        
     }
 }

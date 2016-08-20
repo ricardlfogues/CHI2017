@@ -43,12 +43,10 @@ public class Evaluator {
         RecommenderBuilder builder = new MyRecommenderBuilder();
         PrintWriter writer = new PrintWriter(resultFile, "UTF-8");
         double result = 0;
-        for(int i = 0; i < 1000; i++){
-            result += evaluator.evaluate(builder, null, model, 0.9, 1.0);
-            //writer.println(result);            
-        }        
-        result /= 1000;
-        writer.println(result);
+        for(int i = 0; i < 100; i++){
+            result = evaluator.evaluate(builder, null, model, 0.9, 1.0);
+            writer.println(result);            
+        }                
         writer.close();
     }    
 }

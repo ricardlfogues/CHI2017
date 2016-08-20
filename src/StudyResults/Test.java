@@ -39,8 +39,8 @@ public class Test {
     public static void main(String[] args) throws IOException, TasteException, ClassNotFoundException, SQLException {   
         //GenerateDataModelFiles();
         //BasicRecommendation();
-        //EvaluateRecommender("Resources/case1NumericID.csv", "Resources/EvaluationResult.txt");
-        FeatureSelection.SelectFeaturesCase1();
+        //EvaluateRecommender("Ressources/case1NumericID.csv", "Resources/EvaluationResult.txt");
+        FeatureSelection.SelectFeaturesCase3();
     }
     
     /**
@@ -49,7 +49,7 @@ public class Test {
      * @throws TasteException 
      */   
     private static void BasicRecommendation() throws IOException, TasteException{
-        DataModel model = new FileDataModel(new File("Resources/case1NumericID.csv"));
+        DataModel model = new FileDataModel(new File("Ressources/FeatureSearch/Input/featureSearchCase2_Most_1_Least_0_Maj_0.csv"));
         UserSimilarity similarity = new PearsonCorrelationSimilarity(model);
         UserNeighborhood neighborhood = new ThresholdUserNeighborhood(0.1, similarity, model);
         UserBasedRecommender recommender = new GenericUserBasedRecommender(model, neighborhood, similarity);
@@ -83,15 +83,15 @@ public class Test {
         }
         String[] relationships = new String[]{"family", "friends", "colleagues"};
 
-        PrintWriter writer = new PrintWriter("Resources/case1NumericID.csv", "UTF-8");
+        PrintWriter writer = new PrintWriter("Ressources/case1NumericID.csv", "UTF-8");
         writer.write(FileDataModelCreator.GetCSVCase1(scenarios, responsesByUser, relationships, false));
         writer.close();
 
-        PrintWriter writer2 = new PrintWriter("Resources/case2NumericID.csv", "UTF-8");
+        PrintWriter writer2 = new PrintWriter("Ressources/case2NumericID.csv", "UTF-8");
         writer2.write(FileDataModelCreator.GetCSVCase2(scenarios, responsesByUser, false));
         writer2.close();
         
-        PrintWriter writer3 = new PrintWriter("Resources/case3NumericID.csv", "UTF-8");
+        PrintWriter writer3 = new PrintWriter("Ressources/case3NumericID.csv", "UTF-8");
         writer3.write(FileDataModelCreator.GetCSVCase3(scenarios, responsesByUser, false));
         writer3.close();
     }
@@ -107,7 +107,7 @@ public class Test {
      */
     private static void GetUserAveragePredictionError() throws IOException, FileNotFoundException, TasteException{
         HashMap<String, Double> result = ResultEvaluator.GetRMSEPerUser("Resources/case3TukerID.csv");
-        PrintWriter writer = new PrintWriter("Resources/resultEvaluationCase3.txt", "UTF-8");
+        PrintWriter writer = new PrintWriter("Ressources/resultEvaluationCase3.txt", "UTF-8");
         for(String userID : result.keySet()){
             writer.println(userID + "\t" + result.get(userID));
         }
